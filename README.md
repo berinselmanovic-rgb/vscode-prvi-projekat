@@ -1,2 +1,0 @@
-# vscode-prvi-projekat
-io
