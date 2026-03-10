@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kino</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0b1020;
+      --bg-soft: #121a31;
+      --panel: rgba(19, 28, 53, 0.88);
+      --panel-2: rgba(255, 255, 255, 0.05);
+      --text: #f4f7ff;
+      --muted: #a7b2d1;
+      --accent: #ff4040;
+      --accent-2: #6ea8ff;
+      --gold: #ffd166;
+      --border: rgba(255, 255, 255, 0.12);
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      --radius: 22px;
+    }
+
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(110, 168, 255, 0.18), transparent 35%),
+        radial-gradient(circle at top right, rgba(255, 64, 64, 0.16), transparent 30%),
+        linear-gradient(135deg, #070b16 0%, #0d1530 55%, #09111f 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 32px;
+    }
+
+    .container {
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: stretch;
+      margin-bottom: 28px;
+    }
+
+    .hero-card,
+    .info-card,
+    .gallery-card,
+    .pricing-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-card {
+      padding: 38px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.06), transparent 30%),
+        radial-gradient(circle at 80% 10%, rgba(255, 209, 102, 0.15), transparent 22%);
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: var(--gold);
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      letter-spacing: 0.4px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: 52px;
+      line-height: 1.05;
+      margin-bottom: 16px;
+      font-weight: 800;
+      letter-spacing: -1.4px;
+    }
+
+    .hero-card p {
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 720px;
+      margin-bottom: 26px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 160px;
+      padding: 15px 22px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: 0.25s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff4a4a, #d91e41);
+      color: white;
+      box-shadow: 0 12px 30px rgba(255, 64, 64, 0.28);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px rgba(255, 64, 64, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      border-color: rgba(255,255,255,0.12);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .info-card {
+      padding: 28px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .mini-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1.8px;
+      color: var(--accent-2);
+      margin-bottom: 4px;
+    }
+
+    .event-title {
+      font-size: 30px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .event-desc {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    .stat-box {
+      background: var(--panel-2);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .stat-box strong {
+      display: block;
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+
+    .stat-box span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .gallery-card {
+      padding: 28px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .section-head h2 {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    .image-wrapper {
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .image-wrapper img {
+      width: 100%;
+      display: block;
+      border-radius: 18px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+      object-fit: cover;
+    }
+
+    .image-caption {
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .pricing-card {
+      padding: 28px;
+      position: sticky;
+      top: 24px;
+    }
+
+    .pricing-card h3 {
+      font-size: 26px;
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+
+    .pricing-card p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    .ticket-types {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .ticket {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      transition: 0.25s ease;
+    }
+
+    .ticket:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .ticket strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .ticket span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .price {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+
+    .details-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 6px;
+      margin-bottom: 24px;
+    }
+
+    .details-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .details-item strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .footer-note {
+      margin-top: 14px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1100px) {
+      .hero,
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pricing-card {
+        position: static;
+      }
+
+      h1 {
+        font-size: 42px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 18px;
+      }
+
+      .hero-card,
+      .info-card,
+      .gallery-card,
+      .pricing-card {
+        padding: 20px;
+        border-radius: 20px;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+
+      .section-head {
+        flex-direction: column;
+        align-items: start;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .ticket {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .price {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <div class="hero-card">
+        <div class="badge">KINO • Raspored sjedišta</div>
+        <h1>CinemasCity Kino</h1>
+        <p>
+          Dobrodošli na web stranicu kina. U nastavku se nalazi pregled rasporeda sjedišta,
+          osnovne informacije o projekciji i elegantan prikaz karata. 
+        </p>
+        <div class="hero-actions">
+          <a href="#sjedista" class="btn btn-primary">Pogledaj sjedišta</a>
+          <a href="#karte" class="btn btn-secondary">Pogledaj cijene</a>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div>
+          <div class="mini-title">Večerašnja projekcija</div>
+          <div class="event-title">Bijeg iz Los Anđelesa</div>
+          <div class="event-desc">
+            Moderna sala sa preglednim rasporedom redova, velikim platnom i udobnim sjedištima za potpun kino doživljaj.
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat-box">
+            <strong>10</strong>
+            <span>redova sjedišta</span>
+          </div>
+          <div class="stat-box">
+            <strong>80+</strong>
+            <span>ukupnih mjesta</span>
+          </div>
+          <div class="stat-box">
+            <strong>4K</strong>
+            <span>kvalitet projekcije</span>
+          </div>
+          <div class="stat-box">
+            <strong>Dolby</strong>
+            <span>prostorni zvuk</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="main-grid">
+      <div class="gallery-card" id="sjedista">
+        <div class="section-head">
+          <div>
+            <h2>Raspored sjedišta</h2>
+          </div>
+          <p>
+            U nastavku je prikazana slika rasporeda sjedišta u kino sali, sa jasno označenim redovima i pozicijom platna.
+          </p>
+        </div>
+
+        <div class="image-wrapper">
+          <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxITEhUSExIVFhUWGR4XGRcXGRgeHRkXGx0bHR0aGxgYHSggGB4lGxgYITEiJSkrLi4uGiAzODMsNygtLisBCgoKDg0OGxAQGy0lICUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAKoA5QMBIgACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAGAQIDBAUABwj/xABDEAACAQMCAwQHBQYFBQAAAAABAgMABBEFEiExBhNBUSJhcYGRMqGxwdEUQlJicuHxM1OCkgcWNENTg7LxJENj/8QAGgEBAAMBAQEAAAAAAAAAAAAAAAECAwQFBv/EACkRAAICAgIBAwMEAwAAAAAAAAABAhEDIRIxBEETIlFhBRQycYGh0fDx/9oADAMBAAIRAxEAPwD3iiigAooooAKKKKACiiigAooooAKKKKACiiigAorD8W+LtM8L6e2s3M4kUSM0w4VB1JA69TVr4k+M7f4feH4dQhm1HTWgW3c40JCVfK4PP8A7q4/Zo8QfF34j+GNJ8Z6Lq9tqV2J7y3C3VvGzs2Qw5+YAkjv6n7V8wRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf/Z" alt="Raspored kino sjedišta" />
+          <div class="image-caption">
+            <span>Prikaz redova i sjedišta u kino sali</span>
+            <span>Platno se nalazi na prednjem dijelu sale</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="pricing-card" id="karte">
+        <h3>Karte i informacije</h3>
+        <p>
+          Ovo je informativni prikaz ponude kina sa jasno izdvojenim vrstama karata i detaljima o projekciji.
+        </p>
+
+        <div class="ticket-types">
+          <div class="ticket">
+            <div>
+              <strong>Standard karta</strong>
+              <span>Klasično sjedište u sali</span>
+            </div>
+            <div class="price">8 KM</div>
+          </div>
+
+          <div class="ticket">
+            <div>
+              <strong>Premium karta</strong>
+              <span>Bolja centralna pozicija</span>
+            </div>
+            <div class="price">12 KM</div>
+          </div>
+
+          <div class="ticket">
+            <div>
+              <strong>VIP karta</strong>
+              <span>Najbolja mjesta i dodatna udobnost</span>
+            </div>
+            <div class="price">16 KM</div>
+          </div>
+        </div>
+
+        <div class="details-list">
+          <div class="details-item">
+            <span>Lokacija</span>
+            <strong>Sarajevo</strong>
+          </div>
+          <div class="details-item">
+            <span>Početak projekcije</span>
+            <strong>20:00</strong>
+          </div>
+          <div class="details-item">
+            <span>Trajanje filma</span>
+            <strong>2h 05min</strong>
+          </div>
+          <div class="details-item">
+            <span>Tehnologija</span>
+            <strong>4K / Dolby Audio</strong>
+          </div>
+        </div>
+
+        <a href="#sjedista" class="btn btn-primary" style="width: 100%;">Prikaži sjedišta</a>
+        <div class="footer-note">
+          web stranica izrađena za prikaz kino sale i rasporeda mjesta.
+        </div>
+      </aside>
+    </section>
+  </div>
+</body>
+</html>
